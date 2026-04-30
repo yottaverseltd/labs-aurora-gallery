@@ -2,7 +2,8 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <FontFamily x:Key="PrimaryFontFamily">Inter, Segoe UI, -apple-system, system-ui, sans-serif</FontFamily>
+  <!-- System-first: Skia WASM + Inter variable/font bugs should never replace OS text with garbage. -->
+  <FontFamily x:Key="PrimaryFontFamily">system-ui, -apple-system, ui-sans-serif, 'Segoe UI', Inter, sans-serif</FontFamily>
 
   <Style x:Key="HeroText" TargetType="TextBlock">
     <Setter Property="FontFamily" Value="{StaticResource PrimaryFontFamily}" />

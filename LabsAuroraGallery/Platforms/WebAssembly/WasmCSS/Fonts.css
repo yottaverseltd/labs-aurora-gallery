@@ -1,41 +1,10 @@
 /**
-  WASM typography: Inter loads from WOFF2 so PrimaryFontFamily renders crisply on Linux browsers (no Segoe UI).
-  Roboto faces ship with Uno for embedded resources. See https://github.com/unoplatform/uno/issues/3954
+  WASM typography: Skia WASM can mis-render Inter from a single variable WOFF2, and relative ./Uno.Fonts.* URLs
+  can 404 when hosted under WasmShellWebAppBasePath — producing unreadable glyphs in chrome.
+
+  Typography.xaml uses **system UI fonts first** so text stays readable without any webfonts.
+
+  Optional Inter loads via Google Fonts CSS (HTTPS, correct static subsets per browser; unaffected by GH Pages paths).
 */
 
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYAZJhiI.woff2')
-    format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Segoe UI';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: local('Segoe UI'), local('Segoe UI Regular');
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url(./Uno.Fonts.Roboto/Fonts/Roboto-Light.ttf) format('truetype');
-  font-weight: 300;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url(./Uno.Fonts.Roboto/Fonts/Roboto-Regular.ttf) format('truetype');
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url(./Uno.Fonts.Roboto/Fonts/Roboto-Medium.ttf) format('truetype');
-  font-weight: 500;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
