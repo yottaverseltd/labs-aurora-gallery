@@ -31,12 +31,19 @@ jobs:
 
       # Pages must use Source: GitHub Actions (once per repo under Settings → Pages); see README Troubleshooting.
 
+      - name: restore wasm only
+        run: >
+          dotnet restore LabsAuroraGallery/LabsAuroraGallery.csproj
+          -p:TargetFrameworks=net9.0-browserwasm
+
       - name: publish wasm
         run: >
           dotnet publish LabsAuroraGallery/LabsAuroraGallery.csproj
+          --no-restore
           -c Release -f net9.0-browserwasm
           -o artifacts/wasm
           -p:TreatWarningsAsErrors=true
+          -p:TargetFrameworks=net9.0-browserwasm
           -p:WasmShellWebAppBasePath=/labs-aurora-gallery/
 
       # why: _framework starts with underscore, Jekyll would drop it on Pages

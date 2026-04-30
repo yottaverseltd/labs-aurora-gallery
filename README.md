@@ -1,6 +1,10 @@
 # labs-aurora-gallery
 
+## Try it on GitHub Pages
+
 **Live:** https://yottaverseltd.github.io/labs-aurora-gallery/
+
+**Prerequisites:** none. Typography on WASM loads **Inter** from Google Fonts via `WasmCSS/Fonts.css`. Desktop builds ship from tagged **`v*`** releases only (no APK in this repo).
 
 **Troubleshooting:** If the live URL returns 404, open **Settings → Pages → Build and deployment** and set **Source** to **GitHub Actions**, then re-run the latest **deploy-pages** workflow.
 
