@@ -2,7 +2,7 @@
 
 Design tokens that survive contact with code.
 
-Live: https://yottaverseltd.github.io/labs-aurora-gallery/
+Live: https://yottaverseltd.github.io/labs-aurora-gallery/ (requires GitHub Actions Pages enabled once under Settings).
 
 ## Build
 
