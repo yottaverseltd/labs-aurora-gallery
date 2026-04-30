@@ -42,6 +42,24 @@ public sealed partial class MainPage : Page
 
         ReducedMotion.Changed += (_, _) =>
             _dispatcher.TryEnqueue(RefreshBindings);
+
+        SizeChanged += OnMainPageSizeChanged;
+    }
+
+    private void OnMainPageSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        // WASM Skia: after large jumps (maximize), force a fresh measure on the rail subtree to avoid stale fractional layout.
+#if __WASM__
+        if (double.IsNaN(e.NewSize.Width) || double.IsNaN(e.NewSize.Height) || e.NewSize.Width <= 0 || e.NewSize.Height <= 0)
+        {
+            return;
+        }
+
+        NavHostRoot.InvalidateMeasure();
+        NavHostRoot.InvalidateArrange();
+        SectionNav.InvalidateMeasure();
+        SectionNav.InvalidateArrange();
+#endif
     }
 
     private void RefreshBindings()

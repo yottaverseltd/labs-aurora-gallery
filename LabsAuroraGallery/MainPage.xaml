@@ -1,4 +1,4 @@
-<Page x:Class="LabsAuroraGallery.MainPage"
+﻿<Page x:Class="LabsAuroraGallery.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:design="using:LabsAuroraGallery.Design"
@@ -123,13 +123,18 @@
 
   <Grid UseLayoutRounding="True">
     <Grid.ColumnDefinitions>
-      <!-- Fixed integer nav width (not Auto): avoids fractional column widths + bad Skia WASM text rasterization in the rail. -->
-      <ColumnDefinition Width="{StaticResource NavRailWidthGallery}" />
+      <!-- Literal pixel column: avoids GridLength coersion from x:Double resources + keeps rail width stable at any window/DPR. -->
+      <ColumnDefinition Width="236" />
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
 
-    <Border Grid.Column="0"
-            Style="{StaticResource GalleryNavHostStyle}">
+    <Border x:Name="NavHostRoot"
+            Grid.Column="0"
+            Style="{StaticResource GalleryNavHostStyle}"
+            Width="236"
+            MinWidth="236"
+            MaxWidth="236"
+            HorizontalAlignment="Left">
       <Grid RowDefinitions="Auto,*,Auto,Auto"
             UseLayoutRounding="True">
         <StackPanel Margin="0,8,0,18"
@@ -248,8 +253,12 @@
 
     <Grid Grid.Column="1"
           UseLayoutRounding="True">
+      <!-- Skia WASM: an unbounded fullscreen radial gradient stresses rasterization; cap height so text layers stay stable when maximized. -->
       <Rectangle Fill="{ThemeResource AuroraGlowBrush}"
-                  IsHitTestVisible="False" />
+                 IsHitTestVisible="False"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Stretch"
+                 Height="820" />
       <ScrollViewer Padding="{StaticResource InsetGalleryPage}">
         <Grid>
           <StackPanel x:Name="SectionTypography"

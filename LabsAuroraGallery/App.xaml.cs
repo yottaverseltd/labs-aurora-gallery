@@ -1,4 +1,5 @@
 using LabsAuroraGallery.Motion;
+using Microsoft.UI.Xaml.Media;
 
 namespace LabsAuroraGallery;
 
@@ -7,6 +8,11 @@ public sealed partial class App : Application
     public App()
     {
         InitializeComponent();
+#if __WASM__
+        // Long stacks (especially Inter variable) can resolve badly on browser Skia at very large surfaces; system UI sans is stable.
+        Resources["PrimaryFontFamily"] = new FontFamily(
+            "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif");
+#endif
     }
 
     public static Window? MainWindow { get; private set; }
