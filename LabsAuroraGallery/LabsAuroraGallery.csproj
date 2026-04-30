@@ -24,6 +24,8 @@
     <UnoFeatures>
       SkiaRenderer;
     </UnoFeatures>
+
+    <UnoSplashScreenColor>#0B0D10</UnoSplashScreenColor>
   </PropertyGroup>
 
 </Project>
