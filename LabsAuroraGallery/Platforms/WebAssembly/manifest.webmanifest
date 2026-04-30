@@ -4,7 +4,7 @@
   "display": "standalone",
   "name": "LabsAuroraGallery",
   "short_name": "LabsAuroraGallery",
-  "start_url": "/index.html",
+  "start_url": "./",
   "theme_color": "#ffffff",
-  "scope": "/"
+  "scope": "./"
 }

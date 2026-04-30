@@ -50,6 +50,20 @@ jobs:
       - name: disable jekyll
         run: touch artifacts/wasm/wwwroot/.nojekyll
 
+      - name: validate wasm artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          WWWROOT=artifacts/wasm/wwwroot
+          test -f "$WWWROOT/index.html" || { echo "missing index.html"; exit 1; }
+          test -f "$WWWROOT/Fonts.css" || { echo "missing Fonts.css (WasmCSS pipeline)"; exit 1; }
+          test -s "$WWWROOT/Fonts.css" || { echo "Fonts.css empty"; exit 1; }
+          grep -qE '@import|fonts\.googleapis\.com' "$WWWROOT/Fonts.css" || \
+            { echo "Fonts.css missing Google Fonts @import wiring"; exit 1; }
+          test -f "$WWWROOT/.nojekyll"
+          WASM_COUNT=$(find "$WWWROOT" -name '*.wasm' -type f ! -path '*/downloads/*' | wc -l | tr -d ' ')
+          if [ "$WASM_COUNT" -lt 1 ]; then echo "no .wasm bundles under wwwroot"; exit 1; fi
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: artifacts/wasm/wwwroot
