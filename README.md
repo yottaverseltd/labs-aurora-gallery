@@ -2,6 +2,8 @@
 
 **Live:** https://yottaverseltd.github.io/labs-aurora-gallery/
 
+**Troubleshooting:** If the live URL returns 404, open **Settings → Pages → Build and deployment** and set **Source** to **GitHub Actions**, then re-run the latest **deploy-pages** workflow.
+
 **Source:** https://github.com/yottaverseltd/labs-aurora-gallery
 
 Design-token and motion **gallery** for Uno: colors, type ramp, spacing, radii, motion curves, and control specimens in one scrollable lab.
