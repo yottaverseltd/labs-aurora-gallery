@@ -55,10 +55,48 @@
   </Style>
 
   <Style x:Key="GalleryNavHostStyle" TargetType="Border">
+    <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Background" Value="{ThemeResource SurfaceBrush}" />
     <Setter Property="BorderBrush" Value="{ThemeResource BorderBrush}" />
     <Setter Property="BorderThickness" Value="0,0,1,0" />
     <Setter Property="Padding" Value="{StaticResource Space16}" />
+  </Style>
+
+  <!-- Minimal ListBoxItem: avoids Fluent reveal / semi-transparent selection layers that rasterize poorly on Skia WASM. -->
+  <Style x:Key="GallerySectionNavListBoxItemStyle" TargetType="ListBoxItem">
+    <Setter Property="Padding" Value="8,6" />
+    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="UseLayoutRounding" Value="True" />
+    <Setter Property="Background" Value="{ThemeResource TransparentChromeBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <Border x:Name="LayoutRoot"
+                  Background="{ThemeResource TransparentChromeBrush}"
+                  UseLayoutRounding="True">
+            <VisualStateManager.VisualStateGroups>
+              <VisualStateGroup x:Name="SelectionStates">
+                <VisualState x:Name="Unselected" />
+                <VisualState x:Name="Selected">
+                  <VisualState.Setters>
+                    <Setter Target="LayoutRoot.Background" Value="{ThemeResource HoverBrush}" />
+                  </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SelectedUnfocused">
+                  <VisualState.Setters>
+                    <Setter Target="LayoutRoot.Background" Value="{ThemeResource HoverBrush}" />
+                  </VisualState.Setters>
+                </VisualState>
+              </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Margin="{TemplateBinding Padding}" />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
 
 </ResourceDictionary>
