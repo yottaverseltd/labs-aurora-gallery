@@ -144,6 +144,7 @@
                    SelectionChanged="OnSectionNavChanged"
                    SelectedIndex="0"
                    SelectionMode="Single"
+                   FontFamily="{StaticResource PrimaryFontFamily}"
                    Background="{ThemeResource TransparentChromeBrush}">
             <ListBoxItem>
               <StackPanel Orientation="Horizontal"

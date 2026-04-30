@@ -4,7 +4,7 @@
 
 **Live:** https://yottaverseltd.github.io/labs-aurora-gallery/
 
-**Prerequisites:** none. Typography on WASM loads **Inter** from Google Fonts via `WasmCSS/Fonts.css`. Desktop builds ship from tagged **`v*`** releases only (no APK in this repo).
+**Prerequisites:** none. **`PrimaryFontFamily`** resolves **system UI fonts first** (`system-ui`, **Segoe UI**, then **Inter**/generic sans-serif) so Skia WASM text stays readable on GitHub Pages. Optional **Inter** weights load via **`@import` from Google Fonts** in `WasmCSS/Fonts.css` (HTTPS subsets; unaffected by `WasmShellWebAppBasePath`). Desktop builds ship from tagged **`v*`** releases only (no APK in this repo).
 
 **Troubleshooting:** If the live URL returns 404, open **Settings → Pages → Build and deployment** and set **Source** to **GitHub Actions**, then re-run the latest **deploy-pages** workflow.
 
