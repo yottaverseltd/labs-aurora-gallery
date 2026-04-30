@@ -148,10 +148,17 @@ public sealed partial class MainPage : Page
             PrimaryButtonText = "Close",
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = XamlRoot,
-            Background = Application.Current.Resources["SurfaceElevatedBrush"] as Brush
-                         ?? throw new InvalidOperationException("SurfaceElevatedBrush missing."),
-            BorderBrush = Application.Current.Resources["BorderBrush"] as Brush,
         };
+
+        if (Application.Current.Resources["SurfaceElevatedBrush"] is Brush surface)
+        {
+            dialog.Background = surface;
+        }
+
+        if (Application.Current.Resources["BorderBrush"] is Brush edge)
+        {
+            dialog.BorderBrush = edge;
+        }
 
         var body = new TextBlock
         {
