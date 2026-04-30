@@ -1,0 +1,11 @@
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <x:String x:Key="IconGalleryTypographyGlyph">F1 M4 18 H20 V16 H6 V12 H18 V10 H7 V8 H19 V6 H4 Z</x:String>
+  <x:String x:Key="IconGalleryColorGlyph">F1 M12 2 C17.523 2 22 6.477 22 12 C22 17.523 17.523 22 12 22 C6.477 22 2 17.523 2 12 C2 6.477 6.477 2 12 2 Z</x:String>
+  <x:String x:Key="IconGallerySpacingGlyph">F1 M8 6 V18 M13 8 V16 M18 4 V20</x:String>
+  <x:String x:Key="IconGalleryMotionGlyph">F1 M8 18 L16 13 L16 21 Z</x:String>
+  <x:String x:Key="IconGalleryControlsGlyph">F1 M5 17 H19 V19 H5 Z M12 13 H19 V15 H12 Z M7 10 H13 V11 H14 V12 H7 Z M18 12 H19 V13 H17 V12 Z M7 5 H17 V9 H10 V7 H17 V5 Z</x:String>
+
+</ResourceDictionary>

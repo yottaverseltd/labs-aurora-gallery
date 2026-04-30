@@ -1,0 +1,535 @@
+﻿<Page x:Class="LabsAuroraGallery.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:design="using:LabsAuroraGallery.Design"
+      Background="{ThemeResource BgBrush}">
+
+  <Page.Resources>
+
+    <Storyboard x:Name="MotionPop120Story"
+                Completed="MotionPop_Completed">
+      <DoubleAnimation Storyboard.TargetName="MotionCardTranslate"
+                       Storyboard.TargetProperty="Y"
+                       From="0"
+                       To="-30"
+                       AutoReverse="True"
+                       RepeatBehavior="1x"
+                       EnableDependentAnimation="True">
+        <DoubleAnimation.Duration>
+          <StaticResource ResourceKey="MotionFast" />
+        </DoubleAnimation.Duration>
+        <DoubleAnimation.EasingFunction>
+          <StaticResource ResourceKey="EaseStandard" />
+        </DoubleAnimation.EasingFunction>
+      </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Name="MotionPop200Story"
+                Completed="MotionPop_Completed">
+      <DoubleAnimation Storyboard.TargetName="MotionCardTranslate"
+                       Storyboard.TargetProperty="Y"
+                       From="0"
+                       To="-30"
+                       AutoReverse="True"
+                       RepeatBehavior="1x"
+                       EnableDependentAnimation="True">
+        <DoubleAnimation.Duration>
+          <StaticResource ResourceKey="MotionDefault" />
+        </DoubleAnimation.Duration>
+        <DoubleAnimation.EasingFunction>
+          <StaticResource ResourceKey="EaseStandard" />
+        </DoubleAnimation.EasingFunction>
+      </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Name="MotionPop320Story"
+                Completed="MotionPop_Completed">
+      <DoubleAnimation Storyboard.TargetName="MotionCardTranslate"
+                       Storyboard.TargetProperty="Y"
+                       From="0"
+                       To="-30"
+                       AutoReverse="True"
+                       RepeatBehavior="1x"
+                       EnableDependentAnimation="True">
+        <DoubleAnimation.Duration>
+          <StaticResource ResourceKey="MotionSlow" />
+        </DoubleAnimation.Duration>
+        <DoubleAnimation.EasingFunction>
+          <StaticResource ResourceKey="EaseStandard" />
+        </DoubleAnimation.EasingFunction>
+      </DoubleAnimation>
+    </Storyboard>
+
+    <DataTemplate x:Key="SwatchTileTemplate"
+                  x:DataType="design:SwatchItem">
+      <Border Style="{StaticResource GalleryCardChromeStyle}"
+              Margin="0,0,16,16"
+              MinWidth="192">
+        <StackPanel Spacing="{StaticResource Space12}">
+          <Border Height="64"
+                  CornerRadius="{StaticResource Radius8}"
+                  Background="{x:Bind Tint}" />
+          <StackPanel Spacing="{StaticResource Space8}">
+            <TextBlock Style="{StaticResource EyebrowText}"
+                       Foreground="{ThemeResource TextMutedBrush}"
+                       Text="{x:Bind ResourceKey}"
+                       HorizontalAlignment="Left" />
+            <TextBlock Style="{StaticResource BodyText}"
+                       Text="{x:Bind TokenLabel}" />
+            <TextBlock Style="{StaticResource CaptionText}"
+                       FontFamily="{StaticResource PrimaryFontFamily}"
+                       Text="{x:Bind HexLabel}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="AvatarRowTemplate"
+                  x:DataType="design:AvatarRowSpec">
+      <Border Background="{ThemeResource SurfaceBrush}"
+              BorderThickness="0"
+              Margin="0,0,0,8"
+              Padding="{StaticResource Space12}"
+              CornerRadius="{StaticResource Radius8}">
+        <Grid ColumnSpacing="{StaticResource Space16}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Border Width="42"
+                  Height="42"
+                  CornerRadius="21"
+                  Background="{x:Bind Tint}">
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{x:Bind ShortLabel}"
+                       FontWeight="SemiBold"
+                       Foreground="{ThemeResource TextBrush}"
+                       FontSize="{StaticResource FontSize14}" />
+          </Border>
+          <StackPanel Grid.Column="1"
+                      VerticalAlignment="Center"
+                      Spacing="{StaticResource Space4}">
+            <TextBlock Style="{StaticResource BodyText}"
+                       Text="{x:Bind Title}" />
+            <TextBlock Style="{StaticResource CaptionText}"
+                       Text="{x:Bind ToneBrushKey}" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </DataTemplate>
+  </Page.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"
+                        MinWidth="{StaticResource NavRailWidthGallery}" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Column="0"
+            Style="{StaticResource GalleryNavHostStyle}">
+      <Grid RowDefinitions="Auto,*,Auto,Auto">
+        <StackPanel Margin="0,8,0,18"
+                    Spacing="{StaticResource Space8}">
+          <TextBlock Style="{StaticResource EyebrowText}"
+                     Text="AURORA LAB" />
+          <TextBlock Style="{StaticResource TitleText}"
+                     Text="Token gallery"
+                     Margin="0,0,0,4" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1">
+          <ListBox x:Name="SectionNav"
+                   SelectionChanged="OnSectionNavChanged"
+                   SelectedIndex="0"
+                   SelectionMode="Single"
+                   Background="{ThemeResource TransparentChromeBrush}">
+            <ListBoxItem>
+              <StackPanel Orientation="Horizontal"
+                          Spacing="{StaticResource Space12}">
+                <Path Data="{StaticResource IconGalleryTypographyGlyph}"
+                      StrokeThickness="1.33"
+                      Stretch="Uniform"
+                      Height="22"
+                      Width="22"
+                      Stroke="{ThemeResource TextBrush}"
+                      Fill="{ThemeResource TransparentChromeBrush}"
+                      Margin="4,4,8,4" />
+                <TextBlock Text="Typography"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource BodyText}" />
+              </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+              <StackPanel Orientation="Horizontal"
+                          Spacing="{StaticResource Space12}">
+                <Path Data="{StaticResource IconGalleryColorGlyph}"
+                      StrokeThickness="0"
+                      Stretch="Uniform"
+                      Height="22"
+                      Width="22"
+                      Fill="{ThemeResource AccentStrongBrush}"
+                      Margin="4,4,8,4" />
+                <TextBlock Text="Color"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource BodyText}" />
+              </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+              <StackPanel Orientation="Horizontal"
+                          Spacing="{StaticResource Space12}">
+                <Path Data="{StaticResource IconGallerySpacingGlyph}"
+                      StrokeThickness="1.65"
+                      Stretch="Uniform"
+                      Height="22"
+                      Width="22"
+                      Stroke="{ThemeResource TextBrush}"
+                      Fill="{ThemeResource TransparentChromeBrush}"
+                      Margin="4,4,8,4" />
+                <TextBlock Text="Spacing"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource BodyText}" />
+              </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+              <StackPanel Orientation="Horizontal"
+                          Spacing="{StaticResource Space12}">
+                <Path Data="{StaticResource IconGalleryMotionGlyph}"
+                      StrokeThickness="0"
+                      Stretch="Uniform"
+                      Height="22"
+                      Width="22"
+                      Fill="{ThemeResource AccentBrush}"
+                      Margin="4,4,8,4" />
+                <TextBlock Text="Motion"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource BodyText}" />
+              </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+              <StackPanel Orientation="Horizontal"
+                          Spacing="{StaticResource Space12}">
+                <Path Data="{StaticResource IconGalleryControlsGlyph}"
+                      StrokeThickness="0"
+                      Stretch="Uniform"
+                      Height="22"
+                      Width="22"
+                      Fill="{ThemeResource TextMutedBrush}"
+                      Margin="4,4,8,4" />
+                <TextBlock Text="Controls"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource BodyText}" />
+              </StackPanel>
+            </ListBoxItem>
+          </ListBox>
+        </ScrollViewer>
+
+        <Button Grid.Row="2"
+                Content="Flip light palette"
+                Click="ToggleTheme_Click"
+                Margin="0,12,0,4"
+                Style="{StaticResource GallerySecondaryButtonStyle}" />
+
+        <TextBlock x:Name="ReducedMotionHintText"
+                   Grid.Row="3"
+                   Style="{StaticResource CaptionText}"
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="WrapWholeWords" />
+      </Grid>
+    </Border>
+
+    <Grid Grid.Column="1">
+      <Rectangle Fill="{ThemeResource AuroraGlowBrush}"
+                  IsHitTestVisible="False" />
+      <ScrollViewer Padding="{StaticResource InsetGalleryPage}">
+        <Grid>
+          <StackPanel x:Name="SectionTypography"
+                      Spacing="{StaticResource Space24}">
+            <StackPanel Spacing="{StaticResource Space12}">
+              <TextBlock Style="{StaticResource EyebrowText}"
+                         Text="TYPE STACK" />
+              <TextBlock Style="{StaticResource MutedText}"
+                         TextWrapping="Wrap">
+                Typography pulls sizes from Tokens plus named styles merged in Typography.xaml. Samples below show every named style wired for product chrome.
+              </TextBlock>
+            </StackPanel>
+            <StackPanel Spacing="{StaticResource Space8}">
+              <TextBlock Style="{StaticResource CaptionText}"
+                         Text="HeroText" />
+              <TextBlock Style="{StaticResource HeroText}"
+                         Text="Aurora specimens feel calm in motion." />
+            </StackPanel>
+            <StackPanel Spacing="{StaticResource Space8}">
+              <TextBlock Style="{StaticResource CaptionText}"
+                         Text="TitleText" />
+              <TextBlock Style="{StaticResource TitleText}"
+                         Text="Specimen board" />
+            </StackPanel>
+            <StackPanel Spacing="{StaticResource Space8}">
+              <TextBlock Style="{StaticResource CaptionText}"
+                         Text="EyebrowText" />
+              <TextBlock Style="{StaticResource EyebrowText}"
+                         Text="NAVIGATION CONTEXT" />
+            </StackPanel>
+            <StackPanel Spacing="{StaticResource Space8}">
+              <TextBlock Style="{StaticResource CaptionText}"
+                         Text="BodyText" />
+              <TextBlock Style="{StaticResource BodyText}">
+                Paragraph copy keeps the sixteen pixel body rhythm for comfortable reading widths.
+              </TextBlock>
+            </StackPanel>
+            <StackPanel Spacing="{StaticResource Space8}">
+              <TextBlock Style="{StaticResource CaptionText}"
+                         Text="MutedText" />
+              <TextBlock Style="{StaticResource MutedText}">
+                Supporting copy steps back with muted foreground tokens tied to Surface contrast math.
+              </TextBlock>
+            </StackPanel>
+            <StackPanel Spacing="{StaticResource Space8}">
+              <TextBlock Style="{StaticResource CaptionText}"
+                         Text="CaptionText" />
+              <TextBlock Style="{StaticResource CaptionText}">
+                Labels and meta lines stay at twelve pixels with secondary tone discipline.
+              </TextBlock>
+            </StackPanel>
+            <Border Background="{ThemeResource BubbleMineBrush}"
+                    CornerRadius="{StaticResource Radius12}"
+                    Padding="{StaticResource Space16}">
+              <StackPanel Spacing="{StaticResource Space12}">
+                <TextBlock Style="{StaticResource CaptionText}"
+                           Text="ChatBubbleText" />
+                <TextBlock Style="{StaticResource ChatBubbleText}"
+                           Foreground="{ThemeResource TextBrush}">
+                  Bubble copy shrinks slightly for conversational density yet keeps the Primary stack.
+                </TextBlock>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <StackPanel x:Name="SectionColor"
+                      Spacing="{StaticResource Space24}"
+                      Visibility="Collapsed">
+            <StackPanel Spacing="{StaticResource Space12}">
+              <TextBlock Style="{StaticResource EyebrowText}"
+                         Text="SEMANTICS" />
+              <TextBlock Style="{StaticResource MutedText}"
+                         TextWrapping="Wrap">
+                Swatches read Color entries from Tokens in the active theme dictionary. HEX labels rebuild when you flip palettes.
+              </TextBlock>
+            </StackPanel>
+
+            <GridView x:Name="SwatchGrid"
+                      ItemTemplate="{StaticResource SwatchTileTemplate}"
+                      SelectionMode="None"
+                      Margin="0,4,-16,0" />
+          </StackPanel>
+
+          <StackPanel x:Name="SectionSpacing"
+                      Spacing="{StaticResource Space24}"
+                      Visibility="Collapsed">
+            <StackPanel Spacing="{StaticResource Space12}">
+              <TextBlock Style="{StaticResource EyebrowText}"
+                         Text="GRID RHYTHM" />
+              <TextBlock Style="{StaticResource BodyText}">
+                Spaces scale from Tokens.xaml doubles and match the Aurora shell increments.
+              </TextBlock>
+            </StackPanel>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled">
+              <StackPanel Orientation="Horizontal"
+                          Spacing="{StaticResource Space24}"
+                          Padding="0,12,0,0">
+                <StackPanel Spacing="{StaticResource Space12}"
+                            VerticalAlignment="Bottom">
+                  <Border Height="56"
+                          Width="{StaticResource Space4}"
+                          CornerRadius="{StaticResource Radius8}"
+                          Background="{ThemeResource AccentMutedBrush}"
+                          HorizontalAlignment="Center" />
+                  <TextBlock Text="Space 4 px"
+                             Style="{StaticResource CaptionText}"
+                             HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="{StaticResource Space12}"
+                            VerticalAlignment="Bottom">
+                  <Border Height="56"
+                          Width="{StaticResource Space8}"
+                          CornerRadius="{StaticResource Radius8}"
+                          Background="{ThemeResource AccentMutedBrush}"
+                          HorizontalAlignment="Center" />
+                  <TextBlock Text="Space 8 px"
+                             Style="{StaticResource CaptionText}"
+                             HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="{StaticResource Space12}"
+                            VerticalAlignment="Bottom">
+                  <Border Height="56"
+                          Width="{StaticResource Space12}"
+                          CornerRadius="{StaticResource Radius8}"
+                          Background="{ThemeResource AccentMutedBrush}"
+                          HorizontalAlignment="Center" />
+                  <TextBlock Text="Space 12 px"
+                             Style="{StaticResource CaptionText}"
+                             HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="{StaticResource Space12}"
+                            VerticalAlignment="Bottom">
+                  <Border Height="56"
+                          Width="{StaticResource Space16}"
+                          CornerRadius="{StaticResource Radius8}"
+                          Background="{ThemeResource AccentMutedBrush}"
+                          HorizontalAlignment="Center" />
+                  <TextBlock Text="Space 16 px"
+                             Style="{StaticResource CaptionText}"
+                             HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="{StaticResource Space12}"
+                            VerticalAlignment="Bottom">
+                  <Border Height="56"
+                          Width="{StaticResource Space24}"
+                          CornerRadius="{StaticResource Radius8}"
+                          Background="{ThemeResource AccentMutedBrush}"
+                          HorizontalAlignment="Center" />
+                  <TextBlock Text="Space 24 px"
+                             Style="{StaticResource CaptionText}"
+                             HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Spacing="{StaticResource Space12}"
+                            VerticalAlignment="Bottom">
+                  <Border Height="56"
+                          Width="{StaticResource Space32}"
+                          CornerRadius="{StaticResource Radius8}"
+                          Background="{ThemeResource AccentMutedBrush}"
+                          HorizontalAlignment="Center" />
+                  <TextBlock Text="Space 32 px"
+                             Style="{StaticResource CaptionText}"
+                             HorizontalAlignment="Center" />
+                </StackPanel>
+              </StackPanel>
+            </ScrollViewer>
+          </StackPanel>
+
+          <StackPanel x:Name="SectionMotion"
+                      Spacing="{StaticResource Space24}"
+                      Visibility="Collapsed">
+            <StackPanel Spacing="{StaticResource Space12}">
+              <TextBlock Style="{StaticResource EyebrowText}"
+                         Text="EASING STUDY" />
+              <TextBlock Style="{StaticResource BodyText}">
+                Buttons replay the MotionFast, MotionDefault, and MotionSlow resources on the same specimen card. Reduced motion clamps to zero milliseconds through ReducedMotion.Initialize.
+              </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="{StaticResource Space12}">
+              <Button Content="Animate 120 ms"
+                      Style="{StaticResource GalleryPrimaryButtonStyle}"
+                      Click="Anim120_Click" />
+              <Button Content="Animate 200 ms"
+                      Style="{StaticResource GallerySecondaryButtonStyle}"
+                      Click="Anim200_Click" />
+              <Button Content="Animate 320 ms"
+                      Style="{StaticResource GalleryGhostButtonStyle}"
+                      Click="Anim320_Click" />
+            </StackPanel>
+
+            <Border x:Name="MotionCardPanel"
+                    Style="{StaticResource GalleryCardChromeStyle}"
+                    Width="436"
+                    HorizontalAlignment="Left">
+              <Border.RenderTransform>
+                <TranslateTransform x:Name="MotionCardTranslate" />
+              </Border.RenderTransform>
+              <StackPanel Spacing="{StaticResource Space12}">
+                <TextBlock Style="{StaticResource EyebrowText}"
+                           Text="MOTION SPECIMEN" />
+                <TextBlock Style="{StaticResource BodyText}">
+                  Hover state and translation share the eased cubic curve wired in Motion.xaml.
+                </TextBlock>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <StackPanel x:Name="SectionControls"
+                      Spacing="{StaticResource Space24}"
+                      Visibility="Collapsed">
+            <TextBlock Style="{StaticResource EyebrowText}"
+                       Text="INTERACTION SAMPLE" />
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="{StaticResource Space12}">
+              <Button Content="Primary"
+                      Style="{StaticResource GalleryPrimaryButtonStyle}" />
+              <Button Content="Secondary"
+                      Style="{StaticResource GallerySecondaryButtonStyle}" />
+              <Button Content="Ghost"
+                      Style="{StaticResource GalleryGhostButtonStyle}" />
+              <Button Content="Destructive"
+                      Style="{StaticResource GalleryDestructiveButtonStyle}" />
+            </StackPanel>
+
+            <ToggleSwitch Header="Autosave previews"
+                           OnContent="On"
+                           OffContent="Off"
+                           Margin="0,12,0,0" />
+
+            <TextBox PlaceholderText="Type a specimen note"
+                     Width="360"
+                     HorizontalAlignment="Left"
+                     Margin="0,16,0,0" />
+
+            <ComboBox PlaceholderText="Choose a specimen lane"
+                       Width="360"
+                       HorizontalAlignment="Left"
+                       Margin="0,16,0,0">
+              <ComboBoxItem Content="Alpha lane" />
+              <ComboBoxItem Content="Beta lane" />
+              <ComboBoxItem Content="Gamma lane" />
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="{StaticResource Space16}"
+                        Margin="0,8,0,0">
+              <Border Style="{StaticResource GalleryChipChromeStyle}">
+                <TextBlock Style="{StaticResource CaptionText}"
+                           Text="Spec chip" />
+              </Border>
+              <Border Style="{StaticResource GalleryChipChromeStyle}">
+                <TextBlock Style="{StaticResource CaptionText}"
+                           Text="Muted chip" />
+              </Border>
+            </StackPanel>
+
+            <Border Style="{StaticResource GalleryCardChromeStyle}"
+                    Margin="0,12,0,0"
+                    HorizontalAlignment="Left">
+              <StackPanel Spacing="{StaticResource Space12}">
+                <TextBlock Style="{StaticResource TitleText}"
+                           Text="Specimen panel" />
+                <TextBlock Style="{StaticResource BodyText}">
+                  Elevated Surface tokens frame dialog bodies for desktop and WASM previews.
+                </TextBlock>
+                <Button Content="Launch dialog stub"
+                        Style="{StaticResource GalleryGhostButtonStyle}"
+                        HorizontalAlignment="Left"
+                        Click="ShowDialogStub_Click" />
+              </StackPanel>
+            </Border>
+
+            <TextBlock Margin="0,12,0,6"
+                       Style="{StaticResource CaptionText}"
+                       Text="List rows" />
+
+            <Border Style="{StaticResource GalleryCardChromeStyle}"
+                    Padding="{StaticResource Space8}">
+              <ListView x:Name="AvatarList"
+                         ItemTemplate="{StaticResource AvatarRowTemplate}"
+                         SelectionMode="None" />
+            </Border>
+          </StackPanel>
+
+        </Grid>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</Page>

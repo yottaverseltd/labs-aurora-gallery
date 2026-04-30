@@ -1,0 +1,32 @@
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ResourceDictionary.ThemeDictionaries>
+
+    <ResourceDictionary x:Key="Default">
+      <!-- why: teal halo anchored top third, fades into page bg -->
+      <RadialGradientBrush x:Key="AuroraGlowBrush"
+                           Center="0.34,0.08"
+                           GradientOrigin="0.34,0.08"
+                           RadiusX="0.9"
+                           RadiusY="0.9">
+        <GradientStop Color="#332DD4BF" Offset="0" />
+        <GradientStop Color="#100B0D10" Offset="1" />
+      </RadialGradientBrush>
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="Light">
+      <RadialGradientBrush x:Key="AuroraGlowBrush"
+                           Center="0.34,0.08"
+                           GradientOrigin="0.34,0.08"
+                           RadiusX="0.92"
+                           RadiusY="0.92">
+        <GradientStop Color="#2414B8A6" Offset="0" />
+        <GradientStop Color="#00FAF7F0" Offset="1" />
+      </RadialGradientBrush>
+    </ResourceDictionary>
+
+  </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>
