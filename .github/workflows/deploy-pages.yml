@@ -50,19 +50,24 @@ jobs:
       - name: disable jekyll
         run: touch artifacts/wasm/wwwroot/.nojekyll
 
+      # Uno 6+ places Fonts.css under wwwroot/package_<hash>/ (not wwwroot root).
+      # Managed assemblies may be listed in _framework/blazor.boot.json without loose *.wasm on disk in some publish modes.
       - name: validate wasm artifact
         shell: bash
         run: |
           set -euo pipefail
           WWWROOT=artifacts/wasm/wwwroot
           test -f "$WWWROOT/index.html" || { echo "missing index.html"; exit 1; }
-          test -f "$WWWROOT/Fonts.css" || { echo "missing Fonts.css (WasmCSS pipeline)"; exit 1; }
-          test -s "$WWWROOT/Fonts.css" || { echo "Fonts.css empty"; exit 1; }
-          grep -qE '@import|fonts\.googleapis\.com' "$WWWROOT/Fonts.css" || \
-            { echo "Fonts.css missing Google Fonts @import wiring"; exit 1; }
+          FONTS_CSS=$(find "$WWWROOT" -name 'Fonts.css' -type f ! -path '*/downloads/*' | head -n1 || true)
+          if [ -z "$FONTS_CSS" ]; then echo "missing Fonts.css (WasmCSS) anywhere under wwwroot"; exit 1; fi
+          test -s "$FONTS_CSS" || { echo "Fonts.css empty: $FONTS_CSS"; exit 1; }
+          grep -qE '@import|fonts\.googleapis\.com' "$FONTS_CSS" || \
+            { echo "Fonts.css missing Google Fonts @import wiring: $FONTS_CSS"; exit 1; }
           test -f "$WWWROOT/.nojekyll"
-          WASM_COUNT=$(find "$WWWROOT" -name '*.wasm' -type f ! -path '*/downloads/*' | wc -l | tr -d ' ')
-          if [ "$WASM_COUNT" -lt 1 ]; then echo "no .wasm bundles under wwwroot"; exit 1; fi
+          BOOT="$WWWROOT/_framework/blazor.boot.json"
+          test -f "$BOOT" || { echo "missing _framework/blazor.boot.json"; exit 1; }
+          grep -qE '\.wasm' "$BOOT" || { echo "blazor.boot.json lists no .wasm resources"; exit 1; }
+          echo "OK: index.html, $(basename "$(dirname "$FONTS_CSS")")/Fonts.css, boot manifest"
 
       - uses: actions/upload-pages-artifact@v3
         with:
